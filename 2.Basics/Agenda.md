@@ -1,0 +1,4 @@
+- go doc
+- imports and main entry point
+- fmt package
+- variables
