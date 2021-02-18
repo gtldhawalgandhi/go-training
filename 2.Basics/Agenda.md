@@ -3,5 +3,7 @@
 - fmt package
 - variables
 
+- constants
 - types
 - casting
+- built-in functions

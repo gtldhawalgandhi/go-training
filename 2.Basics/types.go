@@ -1,17 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-func workWithTypes() {
-	workWithBoolean()
-	workWithInteger()
-	workWithString()
-	workWithArray()
-	workWithSlice()
-	workWithMap()
-	workWithStruct()
+func main() {
+	workWithTypes()
 }
 
+func workWithTypes() {
+	// workWithBoolean()
+	workWithError()
+	// workWithInteger()
+	// workWithString()
+	// workWithArray()
+	// workWithSlice()
+	// workWithMap()
+	// workWithStruct()
+}
 func workWithInteger() {
 	fmt.Println(" 📚 Integers")
 	// Zero value for integer type is 0
@@ -58,8 +65,32 @@ func workWithBoolean() {
 	fmt.Println("This is bool > ", ok)
 }
 
+func workWithError() {
+	fmt.Println(" 📚 Error Type")
+	// Error type can be a nil type or non-nil type
+	var nilError error
+	fmt.Println("Zero value error > ", nilError)
+	fmt.Println("Is my error nil > ", nilError == nil)
+	hr()
+
+	var myError error = errors.New("My Custom error")
+	fmt.Println("This is my non nil error > ", myError)
+	fmt.Println("Is my error nil > ", myError == nil)
+	fmt.Printf("My error type: %T > \n", myError)
+	hr()
+
+	fmtErr := fmt.Errorf("%s", "My formatted error")
+	fmt.Println("This is my non nil fmt error > ", fmtErr)
+	fmt.Println("Is my fmt error nil > ", fmtErr == nil)
+	fmt.Printf("My error type: %T > \n", fmtErr)
+}
+
 func workWithString() {
 	fmt.Println(" 📚 String")
+
+	// Strings in Go are all unicode or utf-8 encoded
+	// Also strings in Go are immutable sequence of characters or runes
+
 	// Zero value for string is an empty string ""
 
 	// 💡 You CANNOT use single quotes for strings in Go
@@ -398,4 +429,8 @@ func workWithStruct() {
 	}
 
 	fmt.Printf("I am a Gopher > %+v ", gopher)
+}
+
+func hr() {
+	fmt.Println("=====================================")
 }

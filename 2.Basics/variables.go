@@ -1,20 +1,35 @@
 package main
 
-// If we want to use a functionality implemented by someone else then we do that by importing their packages here
-// Go comes with a lot of built-in functionality wrapped in their own packages
-// One way to import packages is by wrapping all imports inside parathesis.
 import (
-	// 'fmt' is the most widely used package provided by Go that allows to format your code 🙂
-	// https://golang.org/pkg/fmt/
 	"fmt"
-	// 💡 If you import a package then you must use it, otherwise your code will not compile
-	// Uncomment the line below to see
-	// "bytes"
 )
 
-// Another way of importing packages is by doing line by line imports although not recommended style
-// import "fmt"
-// import "someOtherPackage"
+var (
+	myString = "Value1"
+	myInt    = 123
+	myBool   = true
+
+	valFromFn = myFn()
+)
+
+// constants are similar to variables except you can only define once during compile time
+// and its value cannot change during runtime/application lifecycle
+const (
+	hello      = "world"
+	small      = 2
+	myOtherInt = 2 * 12
+	powerConst = small << 4
+
+	// Cannot initialize constant from a function
+	// This is not possible
+	// valFromFn = myFn()
+)
+
+const singleLineVal = 34.234
+
+func myFn() string {
+	return "Hi There"
+}
 
 /*
 	// ✨  VARIABLES OUTSIDE FUNCTION
@@ -38,7 +53,7 @@ import (
 // Basics is capitalized and hence its now exported
 // 💡 Its a good practise to have comments above all exported identifiers
 // This way `go doc` can help those who import your package
-func workWithVariablesConstants() {
+func workWithVariables() {
 	// ✨ VARIABLES INSIDE FUNCTION
 	// Value inside variable can change overtime during the lifecycle of your application
 	//
@@ -50,6 +65,10 @@ func workWithVariablesConstants() {
 
 	name = "Golang"
 	age = 11
+
+	// If you dont want to use the value then dont declare the variable
+	// .. instead just use '_' to ignore that (notice you cannot use ':=' notation here)
+	_ = myFn()
 
 	// Once you declare a variable inside a function declaration you must use it, otherwise your code will not compile
 	// If you comment the line below then your code will not compile
@@ -89,9 +108,8 @@ func workWithVariablesConstants() {
 	// For that you can use '_'
 	_, url = "/somePage", "https://google.com"
 	fmt.Println(url)
+}
 
-	// ✨ CONSTANTS
-	// constants are similar to variables except you can only define once during compile time
-	// and its value cannot change during runtime/application lifecycle
-	const myConst string = "THIS WILL NEVER CHANGE"
+func main() {
+	workWithVariables()
 }
