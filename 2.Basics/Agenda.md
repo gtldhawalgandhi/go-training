@@ -2,3 +2,6 @@
 - imports and main entry point
 - fmt package
 - variables
+
+- types
+- casting
