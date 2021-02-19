@@ -10,14 +10,15 @@ func main() {
 }
 
 func workWithTypes() {
-	// workWithBoolean()
+	workWithBoolean()
 	workWithError()
-	// workWithInteger()
-	// workWithString()
-	// workWithArray()
-	// workWithSlice()
-	// workWithMap()
-	// workWithStruct()
+	workWithInteger()
+	workWithString()
+	workWithArray()
+	workWithSlice()
+	workWithMap()
+	workWithStruct()
+	workWithInterface()
 }
 func workWithInteger() {
 	fmt.Println(" 📚 Integers")
@@ -428,7 +429,72 @@ func workWithStruct() {
 		},
 	}
 
-	fmt.Printf("I am a Gopher > %+v ", gopher)
+	fmt.Printf("I am a Gopher > %+v \n", gopher)
+	fmt.Printf("Person Type> %T \n", gopher)
+
+	hr()
+}
+
+func workWithInterface() {
+
+	// Interface is a type in Go, that can hold value of any primitive type
+	// When you are not sure what type to handle you can use interfaces
+
+	//var a interface{} = "Hello Interface"
+	// Empty interface
+	var a interface{} = [3]int{12, 42, 11}
+	//var a interface{} = 23.33
+	fmt.Printf("Type interface :%T: %[1]v \n", a)
+
+	switch a := a.(type) {
+
+	case string:
+		fmt.Println("String value is ", a)
+
+	case [3]int:
+		fmt.Println("Array value is [3]int", a)
+
+	default:
+		fmt.Println("sorry wrong type")
+	}
+
+	hr()
+	// What I want is a value that holds a human
+	// How do I do that?
+	// By creating a value of myType in this example
+	// Notice we doing type conversion from int > myType
+	var h human = myType(89)
+
+	fmt.Printf("Type: %T, Value: %[1]v \n", h)
+
+	h.walk()
+	h.talk()
+	h.hear()
+
+}
+
+// Interface methods
+
+// I have 3 methods for 'human' interface
+type human interface {
+	walk()
+	talk()
+	hear()
+}
+
+// This is my custom type (its nothing but int in this case) that is going to fulfill all 3 methods of type 'human'
+type myType int
+
+func (t myType) walk() {
+	fmt.Printf("My type %T can walk with value: %[1]v \n", t)
+}
+func (t myType) talk() {
+	fmt.Printf("My type %T can talk with value: %[1]v \n", t)
+}
+
+// if you remove hear method then Go compiler will throw error on line where we declared our 'human' variable above
+func (t myType) hear() {
+	fmt.Printf("My type %T can hear with value: %[1]v \n", t)
 }
 
 func hr() {

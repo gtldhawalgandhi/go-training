@@ -8,7 +8,28 @@ func hr() {
 	fmt.Println("================================")
 }
 
+// ENUMS (iota)
+// iota always starts with value 0
+const (
+	Jan int = iota + 1 // 1
+	Feb                // value 2
+	//_                  // skipped
+	Mar // 4
+)
+
+// Use iota to represent file size like so
+const (
+	// Use _ to skip
+	_  = 1 << (iota * 10) // 1 * (2^0)
+	KB                    // 1 * (2^10)
+	MB                    // 1 * (2^20)
+	GB                    // 1 * (2^30)
+)
+
 func main() {
+
+	fmt.Printf("Type: %T, March >  %[1]v \n", Mar)
+	fmt.Printf("Type: %T, GB >  %[1]v \n", GB)
 
 	var hello string = "Hello" + " World"
 
@@ -58,10 +79,9 @@ func main() {
 	arr[1] = 44
 	fmt.Println(arr, arr2)
 
-	// You cannot do this
-	// We will try something else
-	//for i, v := range arr {
-	//v[i] = 12
+	// You can loop through the array and modify its values like so
+	//for i := range arr {
+	//  arr[i] = 12
 	//}
 
 	//hr()
@@ -113,11 +133,14 @@ func main() {
 	fmt.Printf("%#v \n", mp)
 
 	hr()
-	var val int = 123
 
-	fmt.Println(&val)
+	// usr slice and dont pass its address if possible
+	// If you are using an array then you can pass its address
+	var val []int = []int{1}
 
-	err := pr(&val)
+	fmt.Println(val)
+
+	err := pr(val)
 	fmt.Println("Is my error nil > ", err == nil)
 	fmt.Println("My error > ", err)
 
@@ -126,9 +149,11 @@ func main() {
 	fmt.Println(val)
 }
 
-func pr(a *int) error {
+//
+func pr(a []int) error {
 	// Complex business logic to mutate a variable
-	*a = 456
+	// De referencing a variable
+	a = []int{456}
 	fmt.Println(a == nil)
 	//return nil
 

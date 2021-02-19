@@ -1,9 +1,19 @@
+Day2
 - go doc
 - imports and main entry point
 - fmt package
 - variables
 
+Day3
 - constants
 - types
-- casting
+- casting (conversion)
 - built-in functions
+
+Day4
+- interface types, custom types, iota(enums)
+- If else 
+- for, while loop
+- switch
+- variable shadowing / scoping
+
