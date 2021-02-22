@@ -17,7 +17,7 @@ func main() {
 		fmt.Println("Inside Bracket > ", a)
 
 		// If you want to change the value of 'a' that is in the main scope then use this
-		// a = 999
+		//a = 999
 
 	}
 

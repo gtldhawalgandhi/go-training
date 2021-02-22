@@ -15,5 +15,8 @@ Day4
 - If else 
 - for, while loop
 - switch
+
+Day5
 - variable shadowing / scoping
+- JSON
 
