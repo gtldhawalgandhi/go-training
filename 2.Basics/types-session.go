@@ -4,10 +4,6 @@ import (
 	"fmt"
 )
 
-func hr() {
-	fmt.Println("================================")
-}
-
 // ENUMS (iota)
 // iota always starts with value 0
 const (
@@ -26,7 +22,7 @@ const (
 	GB                    // 1 * (2^30)
 )
 
-func main() {
+func typesSession() {
 
 	fmt.Printf("Type: %T, March >  %[1]v \n", Mar)
 	fmt.Printf("Type: %T, GB >  %[1]v \n", GB)

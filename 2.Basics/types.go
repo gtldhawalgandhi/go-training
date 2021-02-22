@@ -5,10 +5,6 @@ import (
 	"fmt"
 )
 
-func main() {
-	workWithTypes()
-}
-
 func workWithTypes() {
 	workWithBoolean()
 	workWithError()
@@ -495,8 +491,4 @@ func (t myType) talk() {
 // if you remove hear method then Go compiler will throw error on line where we declared our 'human' variable above
 func (t myType) hear() {
 	fmt.Printf("My type %T can hear with value: %[1]v \n", t)
-}
-
-func hr() {
-	fmt.Println("=====================================")
 }

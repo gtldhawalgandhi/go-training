@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func scoping() {
 
 	var a int = 333
 
@@ -47,10 +47,4 @@ func main() {
 	}
 
 	fmt.Println("We will see error1 here instead of error2 > ", err)
-
-}
-
-func hr() {
-	fmt.Println()
-	fmt.Println("==================================")
 }

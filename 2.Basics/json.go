@@ -64,7 +64,7 @@ func getFromJSONString() {
 	fmt.Println("Meta value from json > ", a.Meta)
 }
 
-func main() {
+func jsn() {
 	createJSONString()
 	getFromJSONString()
 

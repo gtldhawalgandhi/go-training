@@ -18,7 +18,7 @@ var s string = "My var value"
 // Only inside your function
 //s := "Outside"
 
-func main() {
+func format() {
 
 	//var a, b string = "A", "B"
 	a, b, c := "A", "B", "C"

@@ -93,7 +93,7 @@ func (p *person) fullName() string {
 	return p.firstName + p.lastName
 }
 
-func main() {
+func fn() {
 	fmt.Println(fn1())
 	fmt.Println(fn2())
 	fmt.Println(fn3())

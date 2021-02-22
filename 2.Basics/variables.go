@@ -109,7 +109,3 @@ func workWithVariables() {
 	_, url = "/somePage", "https://google.com"
 	fmt.Println(url)
 }
-
-func main() {
-	workWithVariables()
-}

@@ -8,7 +8,7 @@ func someFn() bool {
 	return true
 }
 
-func main() {
+func controls() {
 
 	// 1 True Brace Style syntax
 
@@ -172,9 +172,4 @@ findMyStuff:
 		fmt.Println("No match found")
 	}
 
-}
-
-func hr() {
-	fmt.Println()
-	fmt.Println("==================================")
 }
