@@ -20,3 +20,10 @@ Day5
 - variable shadowing / scoping
 - JSON
 
+Day6
+- Stringer (custom formatting)
+- Goroutines, Channels
+
+Day7 (TBD)
+- Mutexes
+
