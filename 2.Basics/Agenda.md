@@ -24,6 +24,7 @@ Day6
 - Stringer (custom formatting)
 - Goroutines, Channels
 
-Day7 (TBD)
-- Mutexes
-
+Day7
+- WaitGroups
+- mutexes
+- WrapUp Basics

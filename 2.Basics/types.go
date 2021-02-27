@@ -459,7 +459,8 @@ func workWithInterface() {
 	// How do I do that?
 	// By creating a value of myType in this example
 	// Notice we doing type conversion from int > myType
-	var h human = myType(89)
+	var myVal = 9898
+	var h human = myType(myVal)
 
 	fmt.Printf("Type: %T, Value: %[1]v \n", h)
 
