@@ -19,13 +19,13 @@ func main() {
 
 	for i := 0; i < 3; i++ {
 		wg.Add(1)
-		go func(wg *sync.WaitGroup, mu *sync.Mutex) {
+		go func(wg *sync.WaitGroup, mu *sync.Mutex, idx int) {
 			mu.Lock()
 			defer mu.Unlock()
-			data["a"] += i
+			data["a"] += idx
 
 			wg.Done()
-		}(wg, mu)
+		}(wg, mu, i)
 
 	}
 
