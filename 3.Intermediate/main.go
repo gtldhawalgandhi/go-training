@@ -2,28 +2,24 @@
 package main
 
 import (
-	"fmt"
-	"io"
-	"os"
-
 	l "github.com/gtldhawalgandhi/go-training/3.Intermediate/logger"
 )
 
+func helo() {
+	l.D("Helo debug")
+	l.F("My Fatal example")
+}
+
+// -trimpath will cut short file name everywhere in our code when displaying
+// go build -trimpath -o app && ./app
+// OR
+// go run -trimpath .
 func main() {
-	var logFile io.WriteCloser
-	// WSL // file permissions
-	// Windows: perm has no effect
-	// 1 1 0 >> R W X >> 6 6 0
-	logFile, err := os.OpenFile("logs.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer logFile.Close()
-	l.SetLogger(logFile)
-	l.SetLogLevel(l.INFO)
+	l.SetFileLogger("myLog.txt", l.TRACE)
+	defer l.CleanUp()
 	l.I("Entering main file")
 
-	l.T("My logger ")
-	l.E("My error  ")
-	l.F("My Fatal example  ")
+	l.T("My Trace data")
+	l.E("My error")
+	helo()
 }
