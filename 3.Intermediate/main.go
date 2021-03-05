@@ -23,7 +23,7 @@ func simpleGETClient() {
 		Timeout: 5 * time.Second,
 	}
 
-	res, err := myClient.Get("https://httpbin.org/get")
+	res, err := myClient.Get("http://127.0.0.1:5555/")
 	if err != nil {
 		// Try figure what error type it is and take decisions based on that
 		// Dont throw fatal errors if not required
@@ -42,13 +42,15 @@ func simpleGETClient() {
 	// fmt.Println("Bytes read", n)
 	// fmt.Println("Bytes read data", string(p))
 
+	fmt.Println(res.Header.Get("Content-Type"))
+
 	data, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
 		l.F(err)
 	}
 	defer res.Body.Close()
-	// fmt.Println(string(data))
+	fmt.Println(string(data))
 
 	var mp = make(map[string]interface{})
 	json.Unmarshal(data, &mp)
@@ -61,7 +63,7 @@ func simplePOSTRequest() {
 		Timeout: 5 * time.Second,
 	}
 	data := map[string]interface{}{
-		"Gopher": "Message from someone",
+		"Hello": "Message from the Client",
 	}
 
 	jsonData, err := json.Marshal(data)
@@ -71,7 +73,7 @@ func simplePOSTRequest() {
 
 	payload := bytes.NewReader(jsonData)
 
-	req, err := http.NewRequest("POST", "https://httpbin.org/post", payload)
+	req, err := http.NewRequest("POST", "http://127.0.0.1:5555", payload)
 	// jsonData2, err := json.Marshal(data)
 	if err != nil {
 		l.F(err)
@@ -90,7 +92,7 @@ func simplePOSTRequest() {
 		l.F(err)
 	}
 	defer res.Body.Close()
-	fmt.Println(string(readerData))
+	fmt.Println("Client >> Response", string(readerData))
 }
 
 // -trimpath will cut short file name everywhere in our code when displaying
@@ -106,7 +108,10 @@ func main() {
 	// l.E("My error")
 	// helo()
 
-	simpleGETClient()
-	simplePOSTRequest()
-
+	go func() {
+		time.Sleep(200 * time.Millisecond)
+		// simpleGETClient()
+		simplePOSTRequest()
+	}()
+	startServer()
 }
