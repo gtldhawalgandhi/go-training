@@ -3,13 +3,19 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 	"time"
 
+	"github.com/gtldhawalgandhi/go-training/3.Intermediate/api"
+	"github.com/gtldhawalgandhi/go-training/3.Intermediate/db"
 	l "github.com/gtldhawalgandhi/go-training/3.Intermediate/logger"
+	"github.com/jackc/pgx/v4"
 )
 
 func helo() {
@@ -95,6 +101,57 @@ func simplePOSTRequest() {
 	fmt.Println("Client >> Response", string(readerData))
 }
 
+func testServer() {
+	var err error
+
+	conn, err := pgx.Connect(context.Background(), "postgresql://pguser:pgpass@localhost:5432/pgdb?sslmode=disable")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	store := db.NewPGStore(conn)
+
+	server, err := api.NewServer(store)
+	if err != nil {
+		log.Fatal("Failed to create server", err)
+	}
+
+	err = server.Start(":5555")
+	if err != nil {
+		log.Fatal("Failed to start server", err)
+	}
+}
+
+func testDB() {
+	var err error
+
+	conn, err := pgx.Connect(context.Background(), "postgresql://pguser:pgpass@localhost:5432/pgdb?sslmode=disable")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	store := db.NewPGStore(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+
+	fmt.Println(store.GetUsers(ctx))
+	// ur, err := store.GetUserByEmail(context.Background(), "a@b.com")
+	// ur, err := store.UpdateUser(ctx, db.UserRequest{
+	// 	FirstName: "aa",
+	// 	LastName:  "bb",
+	// 	UserName:  "aabb",
+	// 	Email:     "aa@bb.com",
+	// })
+	// b, _ := json.Marshal(ur)
+	// fmt.Printf("%+v %v \n", ur, err)
+	// fmt.Printf("%v \n", string(b))
+
+}
+
 // -trimpath will cut short file name everywhere in our code when displaying
 // go build -trimpath -o app && ./app
 // OR
@@ -108,10 +165,14 @@ func main() {
 	// l.E("My error")
 	// helo()
 
-	go func() {
-		time.Sleep(200 * time.Millisecond)
-		// simpleGETClient()
-		simplePOSTRequest()
-	}()
-	startServer()
+	// go func() {
+	// 	time.Sleep(200 * time.Millisecond)
+	// 	// simpleGETClient()
+	// 	simplePOSTRequest()
+	// }()
+	// startServer()
+
+	// testDB()
+	testServer()
+
 }

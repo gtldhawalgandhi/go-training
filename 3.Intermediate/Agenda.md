@@ -10,3 +10,8 @@ Day10
 - http server
 - middlewares
 - passing request scoped data using context
+
+Day10
+- Postgres
+- Gin endpoints
+- Structure code for extensibility
