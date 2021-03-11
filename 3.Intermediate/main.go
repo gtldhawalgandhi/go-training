@@ -15,6 +15,7 @@ import (
 	"github.com/gtldhawalgandhi/go-training/3.Intermediate/api"
 	"github.com/gtldhawalgandhi/go-training/3.Intermediate/db"
 	l "github.com/gtldhawalgandhi/go-training/3.Intermediate/logger"
+	"github.com/gtldhawalgandhi/go-training/3.Intermediate/util"
 	"github.com/jackc/pgx/v4"
 )
 
@@ -101,15 +102,17 @@ func simplePOSTRequest() {
 	fmt.Println("Client >> Response", string(readerData))
 }
 
-func testServer() {
+func testServer(config util.Config) {
 	var err error
 
-	conn, err := pgx.Connect(context.Background(), "postgresql://pguser:pgpass@localhost:5432/pgdb?sslmode=disable")
+	bgCtx := context.Background()
+
+	conn, err := pgx.Connect(bgCtx, config.DBSource)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	defer conn.Close(bgCtx)
 
 	store := db.NewPGStore(conn)
 
@@ -124,10 +127,10 @@ func testServer() {
 	}
 }
 
-func testDB() {
+func testDB(config util.Config) {
 	var err error
 
-	conn, err := pgx.Connect(context.Background(), "postgresql://pguser:pgpass@localhost:5432/pgdb?sslmode=disable")
+	conn, err := pgx.Connect(context.Background(), config.DBSource)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
@@ -138,18 +141,18 @@ func testDB() {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	fmt.Println(store.GetUsers(ctx))
 	// ur, err := store.GetUserByEmail(context.Background(), "a@b.com")
-	// ur, err := store.UpdateUser(ctx, db.UserRequest{
-	// 	FirstName: "aa",
-	// 	LastName:  "bb",
-	// 	UserName:  "aabb",
-	// 	Email:     "aa@bb.com",
-	// })
-	// b, _ := json.Marshal(ur)
-	// fmt.Printf("%+v %v \n", ur, err)
-	// fmt.Printf("%v \n", string(b))
+	ur, err := store.UpdateUser(ctx, db.UserRequest{
+		FirstName: "aa",
+		LastName:  "bb",
+		UserName:  "aabb",
+		Email:     "aa@bb.com",
+	})
+	b, _ := json.Marshal(ur)
+	fmt.Printf("%+v %v \n", ur, err)
+	fmt.Printf("%v \n", string(b))
 
+	fmt.Println(store.GetUsers(ctx))
 }
 
 // -trimpath will cut short file name everywhere in our code when displaying
@@ -172,7 +175,14 @@ func main() {
 	// }()
 	// startServer()
 
-	// testDB()
-	testServer()
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+
+	fmt.Printf("%+v", config)
+
+	// testDB(config)
+	testServer(config)
 
 }

@@ -15,3 +15,10 @@ Day10
 - Postgres
 - Gin endpoints
 - Structure code for extensibility
+
+Day11
+- taskfile
+- go mod tidy
+- config && env variables
+- JWT token, login
+- DB migration

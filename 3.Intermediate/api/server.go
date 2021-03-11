@@ -1,21 +1,30 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gtldhawalgandhi/go-training/3.Intermediate/db"
+	"github.com/gtldhawalgandhi/go-training/3.Intermediate/token"
 )
 
-// Server serves HTTP requests for our banking service.
+// Server will server HTTP requests
 type Server struct {
-	store  db.Store
-	router *gin.Engine
+	store   db.Store
+	router  *gin.Engine
+	tokener token.Tokener
 }
 
 // NewServer creates a new HTTP server and set up routing.
 func NewServer(store db.Store) (*Server, error) {
+	tokener, err := token.NewJWTToken("12345678901234567890123456789012")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create tokener: %w", err)
+	}
 
 	server := &Server{
-		store: store,
+		store:   store,
+		tokener: tokener,
 	}
 
 	server.setupRouter()
@@ -25,6 +34,7 @@ func NewServer(store db.Store) (*Server, error) {
 func (server *Server) setupRouter() {
 	router := gin.Default()
 
+	router.POST("/login", server.loginUser)
 	router.GET("/users", server.getUsers)
 	router.POST("/users", server.createUser)
 

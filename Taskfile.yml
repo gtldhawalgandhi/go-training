@@ -2,11 +2,28 @@
 
 version: '3'
 
-vars:
-  GREETING: Hello, World!
+dotenv: ['3.Intermediate/myapp.env']
 
 tasks:
-  default:
+  run:
+    dir: '3.Intermediate'
     cmds:
-      - echo "{{.GREETING}}"
-    silent: true
+      - go mod tidy
+      - go install github.com/golang-migrate/migrate/v4/cmd/migrate@v4.14.1
+      - echo "$DB_SOURCE"
+      - go run .
+  
+  up:
+    dir: '3.Intermediate/db'
+    cmds:
+      - migrate -path ./migrations -database "$DB_SOURCE" -verbose up
+  
+  down:
+    dir: '3.Intermediate/db'
+    cmds:
+      - migrate -path ./migrations -database "$DB_SOURCE" -verbose down 1
+  
+  migrate-create:
+    dir: '3.Intermediate/db'
+    cmds:
+      - migrate create -ext sql -dir migrations -seq init

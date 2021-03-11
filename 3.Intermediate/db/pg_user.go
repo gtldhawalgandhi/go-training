@@ -19,12 +19,24 @@ type UserRequest struct {
 
 // UserResponse ...
 type UserResponse struct {
-	UserName  string    `json:"user_name"`
-	Email     string    `json:"email"`
-	FullName  string    `json:"full_name"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	UserName       string    `json:"user_name"`
+	Email          string    `json:"email"`
+	FullName       string    `json:"full_name"`
+	FirstName      string    `json:"first_name"`
+	LastName       string    `json:"last_name"`
+	HashedPassword string    `json:"pass_hash"`
+	CreatedAt      time.Time `json:"created_at,omitempty"`
+}
+
+// GetUserByUsername ..
+func (pg *PGStore) GetUserByUserName(ctx context.Context, userName string) (UserResponse, error) {
+	var ur UserResponse
+	err := pg.db.QueryRow(context.Background(), "select user_name, first_name, last_name, created_at, pass_hash from users where user_name=$1", userName).Scan(&ur.UserName, &ur.FirstName, &ur.LastName, &ur.CreatedAt, &ur.HashedPassword)
+	if err != nil {
+		return UserResponse{}, err
+	}
+
+	return ur, nil
 }
 
 // GetUserByEmail ..
