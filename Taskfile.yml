@@ -1,29 +1,65 @@
 # https://taskfile.dev
 
+
 version: '3'
 
-dotenv: ['3.Intermediate/myapp.env']
+# required for migrations
+dotenv: ['4.Advanced/myapp.env']
 
 tasks:
+  release:
+    dir: '4.Advanced'
+    deps: [deps]
+    env: 
+      APP_VAL: release
+    cmds:
+      - echo "$DB_SOURCE"
+      - go build -trimpath -o myapp.exec
+      - ./myapp.exec
   run:
-    dir: '3.Intermediate'
+    dir: '4.Advanced'
+    deps: [deps]
+    cmds:
+      - go install github.com/cosmtrek/air@v1.15.1
+      - echo "$DB_SOURCE"
+      - go run -trimpath .
+
+  dev:
+    dir: '4.Advanced'
+    deps: [deps]
+    cmds:
+      - go install github.com/cosmtrek/air@v1.15.1
+      - echo "$DB_SOURCE"
+      # If depeendencies are changed then you must restart the whole process
+      - air
+  
+  deps:
+    dir: '4.Advanced'
     cmds:
       - go mod tidy
       - go install github.com/golang-migrate/migrate/v4/cmd/migrate@v4.14.1
-      - echo "$DB_SOURCE"
-      - go run .
-  
-  up:
-    dir: '3.Intermediate/db'
+      
+  up1:
+    dir: '4.Advanced/db'
     cmds:
-      - migrate -path ./migrations -database "$DB_SOURCE" -verbose up
+      - ~/Downloads/migrate -path ./migrations -database "$DB_SOURCE" -verbose up 1
+
+  up:
+    dir: '4.Advanced/db'
+    cmds:
+      - ~/Downloads/migrate -path ./migrations -database "$DB_SOURCE" -verbose up
   
   down:
-    dir: '3.Intermediate/db'
+    dir: '4.Advanced/db'
     cmds:
-      - migrate -path ./migrations -database "$DB_SOURCE" -verbose down 1
+      - ~/Downloads/migrate -path ./migrations -database "$DB_SOURCE" -verbose down
+
+  down1:
+    dir: '4.Advanced/db'
+    cmds:
+      - ~/Downloads/migrate -path ./migrations -database "$DB_SOURCE" -verbose down 1
   
   migrate-create:
-    dir: '3.Intermediate/db'
+    dir: '4.Advanced/db'
     cmds:
-      - migrate create -ext sql -dir migrations -seq init
+      - ~/Downloads/migrate create -ext sql -dir migrations -seq init
